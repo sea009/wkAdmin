@@ -1,0 +1,28 @@
+<style>
+    .navhid{display: none}
+    .navshow{display: block}
+</style>
+<aside class="Hui-aside" style="">
+    <input runat="server" id="divScrollValue" type="hidden"/>
+    <div class="menu_dropdown bk_2">
+        <volist name="list" key="j" id="pvo">
+            <volist name="pvo['child']" id="vo">
+                <dl class="nav-id-<{$pvo.id}>  <if condition="$j neq '1'">navhid<else/>navshow</if>">
+                <dt><i class="icon-th-large"></i> <{$vo.name}><b></b></dt>
+                <dd>
+                    <ul>
+                        <volist name="vo['child']" id="cvo">
+                            <if condition="$cvo.status neq '0'">
+                                <li><a _href="<{:U($cvo['code'])}>" href="javascript:;"><{$i}>.&nbsp;<{$cvo.name}></a></li>
+                                <else />
+                                    <php>$i--;</php>
+                            </if>
+                        </volist>
+                    </ul>
+                </dd>
+                </dl>
+            </volist>
+        </volist>
+    </div>
+</aside>
+<div class="dislpayArrow"> <a class="pngfix" href="javascript:void(0);"></a></div>

@@ -1,0 +1,138 @@
+<extend name="Global:base_layer"/>
+<block name="style">
+    <style type="text/css">
+        .ztree li span.button.switch.level0 {visibility:hidden; width:1px;}
+        .ztree li ul.level0 {padding:0; background:none;}
+    </style>
+    <link rel="stylesheet" href="__STATIC__/zTree/zTreeStyle.css" type="text/css">
+    <link href="__STATIC__/Validform/css/style.css" rel="stylesheet" type="text/css">
+</block>
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/zTree/jquery.ztree.all-3.5.min.js"></script>
+    <script src="__STATIC__/Validform/js/Validform.js" type="text/javascript"></script>
+    <script>
+        $("#admin-role-save").click(function(){
+            var name=$("input[name='name']").val();
+            if(name=='' || name==null){
+                layer.msg('角色名称不能为空');return;
+            }
+            var authority = $('#authority').val();
+            if(authority==''|| authority==null){
+                layer.msg('权限不能为空');return;
+            }
+            $.ajax({
+                type    : 'post',
+                url     : $("#roleAddForm").attr('action'),
+                data    : $("#roleAddForm").serialize(),
+                dataType: "json",
+                success : function(data){
+                    if (data.status == 0) {
+                        layer.msg(data.msg, 3,8);
+                        return;
+                    } else {
+                        layer.msg(data.msg, 3, 1)
+                        parent.location.reload();
+                    }
+                }
+            });
+        });
+
+
+        var setting = {
+            view: {
+                dblClickExpand: true
+            },
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pid"
+                },
+                key: {
+                    name: "name"
+                }
+            },
+            check: {
+                enable: true,
+                chkStyle: "checkbox",
+                chkboxType: { "Y": "p", "N": "s" }
+            },
+            callback:{
+                onCheck:onCheck
+            }
+        };
+        setting.check.chkboxType = { "Y" : "ps", "N" : "ps" };
+
+        var zNodes =<{$advTypeDateJson}>;
+        $(document).ready(function(){
+            $.fn.zTree.init($("#treeAdv"), setting, zNodes);
+            var tree = $.fn.zTree.getZTreeObj("treeAdv");
+            var ids = '<{$info.authority}>';
+            ids = ids.split(",");
+            for(i = 0; i < ids.length; i ++) {
+                tree.checkNode(tree.getNodeByParam("id",ids[i]), true);
+            }
+        });
+
+        function onCheck(e,treeId,treeNode) {
+            var treeObj = $.fn.zTree.getZTreeObj("treeAdv"),
+                    nodes = treeObj.getCheckedNodes(true),
+                    authVal = '';
+            for (var i = 0; i < nodes.length; i++) {
+                authVal +=nodes[i].id+',';
+            }
+            authVal=authVal.substring(0,authVal.length-1);
+            $('#authority').val(authVal);
+        }
+
+    </script>
+</block>
+<block name="main">
+    <div class="codeView ml-10 mr-10 mt-10 pretty-area radius">
+        <form id="roleAddForm" action="<{:U('Access/roleModif')}>" method="POST" id="department"  accept-charset="utf-8" >
+            <input type="hidden" name="id" value="<{$info.id}>"/>
+            <div class="formRow l  pr-20">
+                <div class="formControls">
+                    <strong class="pr-20">角色名:</strong><input class="form-control input-text radius" name="name" required="" value="<{$info.name}>">
+                    <strong class="pr-20">排序值:</strong><input class="form-control input-text radius" name="sort" value="<{$info.sort}>">
+                </div>
+            </div>
+            <div class="formRow l  pr-20">
+                <div class="formControls">
+                    <strong class="pr-20">是否禁用:</strong><input type="checkbox" <if condition="$info.status eq 'q'">check</if> class="form-control input-text radius" name="status">
+                </div>
+            </div>
+            <div class="formRow l  pr-20">
+                <div class="formControls">
+                    <input id="authority" name="authority" type="hidden" value="<{$info.authority}>"/>
+                    <strong class="pr-20">权限选择:</strong>
+                    <div class="zTreeDemoBackground left">
+                        <ul id="treeAdv" class="ztree"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cl"></div>
+            <div class="formRow">
+                <div class="c1 formControls text-c">
+                    <button id="admin-role-save" class="btn btn-success radius" name="admin-role-save" type="button">
+                        <i class="icon-ok"></i>
+                        确定
+                    </button>
+                    <button  class="btn radius btn-danger" name="admin-role-save" type="reset">
+                        <i class="icon-refresh"></i>
+                        重置
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</block>
+
+
+
+
+
+
+
+

@@ -1,0 +1,170 @@
+<extend name="Global:base"/>>
+<block name="style">
+<link rel="stylesheet" href="__STATIC__/zTree/zTreeStyle.css" type="text/css">
+<style type="text/css">
+    .ztree li span.button.switch.level0 {visibility:hidden; width:1px;}
+    .ztree li ul.level0 {padding:0; background:none;}
+    .ztree li{margin:3px 0;}
+</style>
+</block>
+<block name="script">
+    <script type="text/javascript" src="__STATIC__/zTree/jquery.ztree.all-3.5.min.js"></script>
+    <script>
+        $(function(){
+            $("#NodeEditF").Validform({
+                ajaxPost:true,
+                beforeSubmit:function(data){
+                    if (!$("input[name='id']").val()) {
+                        layer.msg('数据加载错误', 2, 3);
+                        return false;
+                    }
+                    var typename = $('#NodeEditF').find("input[name='name']").val();
+                    if (!typename) {
+                        layer.msg('节点名称必须',2,8);
+                        return false;
+                    }
+                    $.ajax({
+                        type    : 'post',
+                        url     : $("#NodeEditF").attr('action'),
+                        data    : $('#NodeEditF').serialize(),
+                        dataType: 'json',
+                        success : function(data){
+                            if (data.status == 0) {
+                                layer.msg(data.info);return;
+                            } else {
+                                layer.msg(data.info, 2, 1);
+                            }
+                        }
+                    });
+                    return false;
+                },
+                tiptype:3
+            });
+            $("#addNodeForm").Validform({
+                ajaxPost:true,
+                beforeSubmit:function(data){
+                    var name = $('#addNodeForm').find("input[name='name']").val();
+                    name = $.trim(name);
+                    if (!name) {
+                        layer.msg('节点名称必须',2,8);
+                        return false;
+                    }
+                    $.ajax({
+                        type    : 'post',
+                        url     : $("#addNodeForm").attr('action'),
+                        data    : $('#addNodeForm').serialize(),
+                        dataType: 'json',
+                        success : function(data){
+                            if (data.status == 0) {
+                                layer.msg(data.msg);
+                                return;
+                            } else {
+                                layer.msg(data.msg, 2, 1, function(){
+                                    location.reload();
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                },
+                tiptype:3
+            });
+            /**
+             *获取子集目录
+             */
+            $('#node_change_box').on('change', '.node_select', function(){
+                var obj = this;
+                $.get("<{:U('Access/getSecondNode')}>",{id:$(obj).val()},function(data){
+                    $(obj).parent().nextAll().remove();
+                    if (data) {
+                        $(obj).parent().after(data);
+                    }
+                });
+            });
+        });
+
+
+        var setting = {
+            view: {
+                dblClickExpand: dblClickExpand
+            },
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pid"
+                },
+                key: {
+                    name: "name"
+                }
+            },
+            callback: {
+                onMouseDown: onMouseDown
+            }
+        };
+        var zNodes =<{$advTypeDateJson}>;
+        $(document).ready(function(){
+            $.fn.zTree.init($("#treeAdv"), setting, zNodes);
+        });
+        function dblClickExpand(treeId, treeNode) {
+            return treeNode.level > 0;
+        }
+        function onMouseDown(event, treeId, treeNode) {
+            if (treeNode && treeNode.id > 1) {
+                $.ajax({
+                    type:'get',async:false,url:"<{:U('Access-nodeModif')}>?id="+treeNode.id,
+                    success:function(data){
+                        $("#NodeEditF").empty().append(data);
+                    }
+                });
+                $('#dataDiv').show();
+            }
+        }
+    </script>
+</block>
+<block name="main">
+    <div class="codeView ml-10 mt-10 pretty-area radius">
+        <div class="select-box-span radius ml-10 mb-10" style="padding: 20px">
+            <form id="addNodeForm" action="<{:U('Access-nodeAdd')}>">
+                <div class="row cl" style="margin-bottom: 10px;">
+                    <cite class="pl-40 pr-10">名称:</cite><input type="text" class="input-text radius" name="name" autocomplete="off" required=""/>
+                    <cite class="pl-40 pr-10">链接:</cite><input type="text" class="input-text radius" name="code" autocomplete="off"/>
+                    <cite class="pl-40 pr-10">排序:</cite><input type="text" class="input-text radius" name="sort" autocomplete="off"/>
+                    <span class="select-box-span radius">
+                        <cite class="pl-40 pr-10">是否显示:</cite>
+                        <label><input type="radio" value="1" name="status" autocomplete="off">显示&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <label><input type="radio" value="0" name="status" autocomplete="off">隐藏&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <label><input type="radio" value="-1" name="status" autocomplete="off">冻结&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    </span>
+                </div>
+                <div id="node_change_box" class="row cl" style="margin-bottom: 10px;">
+                    <cite class="pl-40 pr-10">父类:</cite>
+                    <span class="select-box-span radius" style="margin-right:10px;">
+                        <select name="pid[]" class="myselect node_select" autocomplete="off">
+                            <volist name="firstNode" id="vo">
+                                <option value="<{$vo.id}>"><{$vo.name}></option>
+                            </volist>
+                        </select>
+                    </span>
+                </div>
+                <div class="row cl" style="margin-bottom: 10px;">
+                    <div class="col-9 col-offset-3">
+                        <input type="submit" value="添加" class="btn radius btn-primary">
+                        <input type="reset" value="重置" class="btn radius btn-danger">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+        <div class="select-box-span radius ml-10 mb-10">
+            <div class="ml-40 mb-10 pretty-area l radius w-250" style="margin: 10px 20px 0px 20px;">
+                <div class="zTreeDemoBackground left">
+                    <ul id="treeAdv" class="ztree"></ul>
+                </div>
+            </div>
+            <div id="dataDiv" class="select-box-span mb-10 ml-10 pretty-area bordercinfo l radius hide" style="margin: 10px 20px 0px 20px;padding: 0 20px 10px 20px;">
+                <form id="NodeEditF" action="<{:U('Access/nodeModif')}>"></form>
+            </div>
+        </div>
+    </div>
+</block>

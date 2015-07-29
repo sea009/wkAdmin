@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <LINK rel="Bookmark" href="/favicon.ico" >
+    <LINK rel="Shortcut Icon" href="/favicon.ico" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="__CORE__/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script type="text/javascript" src="__CORE__/js/respond.js/1.4.2/respond.min.js"></script>
+    <script type="text/javascript" src="__CORE__/css3pie/2.0beta1/PIE_IE678.js"></script>
+    <![endif]-->
+    <link href="__CORE__/css/H-ui.css" rel="stylesheet" type="text/css" />
+    <link href="__CORE__/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+    <link href="__CORE__/css/mysetting.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" rel="stylesheet" href="__CORE__/font/font-awesome.min.css"/>
+    <!--[if IE 7]>
+    <link href="http://www.bootcss.com/p/font-awesome/assets/css/font-awesome-ie7.min.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <block name="style"></block>
+</head>
+<body>
+    <nav class="Hui-breadcrumb">
+        <div class="l">
+            <volist name="crumbs" id="vo">
+                <a href="<{:U('Index/Sys/nodeManage')}>?pid=<{$vo.id}>" target="_self"><{$vo.pagename}></a>
+                <span class="c-gray en">&gt;</span>
+            </volist>
+        </div>
+        <a title="刷新" href="javascript:location.replace(location.href);" style="line-height:1.6em;margin-top:3px" class="btn btn-success radius r mr-20">
+            <i class="icon-refresh"></i>
+        </a>
+    </nav>
+    <block name="main"></block>
+    <include file="Global:footer" />
+</body>
+<script type="text/javascript" src="__STATIC__/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="__CORE__/js/H-ui.js"></script>
+<script type="text/javascript" src="__CORE__/js/H-ui.admin.js"></script>
+<script type="text/javascript" src="__STATIC__/layer/layer.min.js"></script>
+<script type="text/javascript" src="__STATIC__/laydate/laydate.js"></script>
+<script type="text/javascript" src="__STATIC__/Validform/js/Validform.js"></script>
+<script type="text/javascript" src="__JS__/common.js"></script>
+<script type="text/javascript" src="__STATIC__/jquery.form.min.js"></script>
+<!--[if IE 6]>
+    <script type="text/javascript" src="__CORE__/js/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <![endif]-->
+<block name="script"></block>
+<script>
+/**弹出层**/
+;$(function(){
+    $('#logout').on('click', function(){
+        layer.confirm('您确定要退出登录？', function(){
+            $.ajax({
+                url:"<{:U('Public/logout')}>",
+                datatype:'json',
+                type:'post',
+                success:function(){
+                    window.location.reload();return;
+                }
+            });
+        });
+        return false;
+    });
+});
+var $layer_findBack;
+function layer_findBack(url, title, width, height, fix, maxmin){
+    if (title == undefined)title='弹窗';
+    if (width == undefined)width=800;
+    if (height == undefined)height=600;
+    if (fix == undefined)fix=true;
+    if (maxmin == undefined)maxmin=true;
+    $layer_findBack = $.layer({
+        type: 2,
+        shade: [0.5, '#000'],
+        fix: fix,
+        title: title,
+        maxmin: maxmin,
+        iframe: {src : url},
+        area: [width+'px' , height+'px'],
+        close: function(){}
+    });
+}
+function layer_iframe(url, title, width, height){
+    if (title == undefined)title='弹窗';
+    if (width == undefined)width=800;
+    if (height == undefined)height=600;
+    $.layer({
+        type: 2,
+        shade: [0],
+        title: title,
+        fix: true,
+        title: title,
+        shadeClose:true,
+        maxmin: true,
+        iframe: {src : url},
+        area: [width+'px' , height+'px'],
+        close: function(index){}
+    });
+}
+
+
+
+$(function(){
+    /*给菜单绑定事件*/
+    $('.top-nav').on('click',function(){
+        alert(1);
+        $('.top-nav.current').removeClass('current');
+        var obj = $(this);
+        obj.addClass('current');
+        var nav_id = obj.attr('nav-id');
+        $('.navshow').removeClass('navshow').addClass('navhid');
+        $('.nav-id-'+nav_id).removeClass('navhid').addClass('navshow');
+    });
+});
+
+/**自定义 end**/
+</script>
+</html>

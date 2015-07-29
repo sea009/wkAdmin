@@ -1,0 +1,76 @@
+<extend name="Global:base_layer"/>
+<block name="style">
+</block>
+<block name="script">
+<script>
+</script>
+</block>
+<block name="main">
+<div class="codeView ml-10 mr-10 mt-10 pretty-area radius">
+    <form action="<{:U('Access/adminModif')}>" method="POST"  accept-charset="utf-8" >
+        <div class="formRow l  pr-20">
+            <div class="formControls">
+                <strong class="pr-20">登录名:</strong><input class="form-control input-text radius" name="name" value="<{$adminInfo.name}>">
+                <strong class="pr-20 pl-40">工号:</strong><input class="form-control input-text radius" name="code" value="<{$adminInfo.code}>">
+            </div>
+        </div>
+        <div class="formRow l  pr-20">
+            <div class="formControls">
+                <strong class="pr-20">姓名全拼:</strong><input class="form-control input-text radius" name="user_pin" value="<{$adminInfo.user_pin}>">
+                <strong class="pr-20 pl-40">电话号码:</strong><input class="form-control input-text radius" name="phone" value="<{$adminInfo.phone}>">
+            </div>
+        </div>
+        <div class="formRow l pr-20">
+            <div class="formControls">
+                <strong class="pr-20">所属部门</strong>
+                <select name="department_id">
+                    <option value="0">无部门</option>
+                    <volist name="dpList" id="d1">
+                        <if condition="$d1['status'] neq 1">
+                            <option value="<{$d1.id}>"><{$d1.name}></option>
+                        </if>
+                    </volist>
+                </select>
+                <strong class="pr-20">所属角色</strong>
+                <option value="0">默认角色</option>
+                <select name="role_id">
+                    <volist name="roleList" id="r">
+                        <if condition="$r['status'] neq 1">
+                            <option value="<{$r.id}>">|-<{$r.name}></option>
+                        </if>
+                    </volist>
+                </select>
+            </div>
+        </div>
+
+        <div class="formRow l  pr-20">
+            <div class="formControls">
+                <strong class="pr-20">排序值:</strong><input class="form-control input-text radius" name="sort" value="<{$adminInfo.sort}>">
+                <strong class="pr-20 pl-40">状态:</strong><input type="checkbox" class="form-control input-text radius" name="status" value="<{$adminInfo.status}>">
+            </div>
+        </div>
+
+        <div class="cl"></div>
+        <div class="formRow">
+            <div class="c1 formControls text-c">
+                <button id="admin-role-save" class="btn btn-success radius" name="admin-role-save" type="submit">
+                    <i class="icon-ok"></i>
+                    确定
+                </button>
+                <button  class="btn radius btn-danger" name="admin-role-save" type="reset">
+                    <i class="icon-refresh"></i>
+                    重置
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+</block>
+
+
+
+
+
+
+
+

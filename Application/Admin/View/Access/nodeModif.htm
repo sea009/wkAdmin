@@ -1,0 +1,49 @@
+<input type="hidden" name="id" autocomplete="off" value="<{$aData.id}>">
+<input type="hidden" name="save" autocomplete="off" value="1">
+<div class="formRow mg-10">
+    <div class="formControls">
+        <strong class="pr-20">ID&nbsp;&nbsp;&nbsp;:</strong>
+        <input type="text" autocomplete="off" class="form-control input-text radius" disabled value="<{$aData.id}>" >
+    </div>
+</div>
+<div class="formRow mg-10">
+    <div class="formControls">
+        <strong class="pr-20">名称:</strong>
+        <input type="text" autocomplete="off" class="form-control input-text radius" name="name" value="<{$aData.name}>" >
+    </div>
+</div>
+<div class="formRow mg-10">
+    <div class="formControls">
+        <strong class="pr-20">链接:</strong>
+        <input type="text" autocomplete="off" class="form-control input-text radius" name="code" value="<{$aData.code}>" >
+    </div>
+</div>
+<div class="formRow mg-10">
+    <div class="formControls">
+        <strong class="pr-20">排序:</strong>
+        <input type="text" autocomplete="off" class="form-control input-text radius" name="sort" value="<{$aData.sort}>" >
+    </div>
+</div>
+<div class="formRow mg-10">
+    <div class="formControls">
+        <strong class="pr-20">是否显示:</strong>
+        <if condition="$aData.status eq '-1'">
+            已删除
+        <else />
+            <label><input <if condition="$aData['status'] eq '1'">checked</if> type="radio" value="1" name="status">显示&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <label><input <if condition="$aData['status'] eq '0'">checked</if> type="radio" value="0" name="status">隐藏&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <label><input <if condition="$aData['status'] eq '-1'">checked</if> type="radio" value="-1" name="status">冻结&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        </if>
+    </div>
+</div>
+<div class="formRow">
+    <div class="c1 formControls text-c">
+        <input type="submit" class="mr-20 btn radius btn-primary" value="确定">
+        <input type="reset" class="mr-20 btn radius btn-danger" value="重置">
+        <if condition="$aData.status eq '-1'">
+            已删除
+        <else />
+            <a class="mr-20 btn radius btn-danger" href="<{:U('nodeDel')}>?id=<{$aData.id}>">删除</a>
+        </if>
+    </div>
+</div>

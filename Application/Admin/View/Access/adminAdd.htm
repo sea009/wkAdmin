@@ -1,0 +1,115 @@
+<extend name="Global:base_layer"/>
+<block name="style">
+    <link href="__STATIC__/Validform/css/style.css" rel="stylesheet" type="text/css">
+</block>
+<block name="script">
+    <script src="__STATIC__/Validform/js/Validform.js" type="text/javascript"></script>
+    <script>
+    $("#admin-role-save").click(function(){
+        var name        = $("input[name='name']").val();
+        var phone       = $("input[name='phone']").val();
+        var department_id= $("select[name='department_id']").val();
+        var role_id     = $("select[name='role_id']").val();
+
+        if(name == ''){
+            layer.msg('登陆名不能为空');return;
+        }
+        if(phone ==''){
+            layer.msg('联系方式不能为空');return;
+        }
+        if(department_id==0 && role_id==0){
+            layer.msg('部门与角色必须2选1');return;
+        }
+
+        $.ajax({
+            type    : 'post',
+            url     : $("#department").attr('action'),
+            data    : $("#department").serialize(),
+            dataType: "json",
+            success : function(data){
+                if (data.status == 0) {
+                    layer.msg(data.msg, 3,8);
+                    return;
+                } else {
+                    layer.msg(data.msg, 3, 1)
+                    parent.location.reload();
+                }
+            }
+        });
+    });
+</script>
+</block>
+<block name="main">
+<div class="codeView ml-10 mr-10 mt-10 pretty-area radius">
+    <form action="<{:U('Access/adminAdd')}>" method="POST" id="department"  accept-charset="utf-8" >
+        <div class="formRow l  pr-20">
+            <div class="formControls">
+                <strong class="pr-20">*登录名:</strong><input class="form-control input-text radius" name="name">
+                <strong class="pr-20 pl-40">工号:</strong><input class="form-control input-text radius" name="code">
+            </div>
+        </div>
+        <div class="formRow l  pr-20">
+            <div class="formControls">
+                <strong class="pr-20">姓名全拼:</strong><input class="form-control input-text radius" name="user_pin">
+                <strong class="pr-20 pl-40">*电话号码:</strong><input class="form-control input-text radius" name="phone">
+            </div>
+        </div>
+        <div class="formRow l  pr-20">
+            <div class="formControls">
+                <strong class="pr-20">是否锁定:</strong><input type="checkbox" class="form-control input-text radius" name="lock">
+                <strong class="pr-20 pl-40">限制ip:</strong><input class="form-control input-text radius" name="limit_ip">
+            </div>
+        </div>
+        <div class="formRow l pr-20">
+            <div class="formControls">
+                <strong class="pr-20">所属部门</strong>
+                <select name="department_id">
+                    <option value="0">无部门</option>
+                    <volist name="dpList" id="d1">
+                        <if condition="$d1['status'] neq 1">
+                            <option value="<{$d1.id}>"><{$d1.name}></option>
+                        </if>
+                    </volist>
+                </select>
+                <strong class="pr-20">所属角色</strong>
+                <select name="role_id">
+                    <option value="0">默认角色</option>
+                    <volist name="roleList" id="r">
+                        <if condition="$r['status'] neq 1">
+                            <option value="<{$r.id}>"><{$r.name}></option>
+                        </if>
+                    </volist>
+                </select>
+            </div>
+        </div>
+
+        <div class="formRow l  pr-20">
+            <div class="formControls">
+                <strong class="pr-20">排序值:</strong><input class="form-control input-text radius" name="user_pin">
+            </div>
+        </div>
+
+        <div class="cl"></div>
+        <div class="formRow">
+            <div class="c1 formControls text-c">
+                <button id="admin-role-save" class="btn btn-success radius" name="admin-role-save" type="button">
+                    <i class="icon-ok"></i>
+                    确定
+                </button>
+                <button  class="btn radius btn-danger" name="admin-role-save" type="reset">
+                    <i class="icon-refresh"></i>
+                    重置
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+</block>
+
+
+
+
+
+
+
+

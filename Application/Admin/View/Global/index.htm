@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html style="overflow-y:hidden;">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<LINK rel="Bookmark" href="/favicon.ico" >
+<LINK rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="__CORE__/js/html5shiv/3.7/html5shiv.min.js"></script>
+<script type="text/javascript" src="__CORE__/js/respond.js/1.4.2/respond.min.js"></script>
+<script type="text/javascript" src="__CORE__/css3pie/2.0beta1/PIE_IE678.js"></script>
+<![endif]-->
+<link href="__CORE__/css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="__CORE__/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="__CORE__/font/font-awesome.min.css" type="text/css" rel="stylesheet"/>
+<title><{$site_title}> V<{$version_code}></title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body style="overflow:hidden">
+<header class="Hui-header cl">
+    <a class="Hui-logo l" title="<{$site_title}> <{$version_code}>" href="/"><{$site_title}></a>
+    <span class="Hui-subtitle l" style="padding-right:10px;">Version&nbsp;&nbsp;<{$version_code}></span>
+    <nav class="mainnav cl">
+        <ul>
+            <volist name="list" id="vo">
+                <if condition="$i eq '1'">
+                    <li class="top-nav current" nav-id="<{$vo.id}>"><a><{$vo.name}></a></li>
+                    <else/>
+                    <li class="top-nav" nav-id="<{$vo.id}>"><a><{$vo.name}></a></li>
+                </if>
+            </volist>
+        </ul>
+    </nav>
+    <span class="Hui-userbox">
+        <span class="c-white"><{$loginUser.admin_name}></span>
+        <a class="btn btn-danger radius ml-10" a href="javascript:;" onclick="logout();" title="退出">
+            <i class="icon-off"></i> 退出
+        </a>
+    </span>
+    <a aria-hidden="false" class="Hui-nav-toggle" id="nav-toggle" href="javascript:;"></a>
+</header>
+
+<div class="cl Hui-main">
+    <include file="Global:left" />
+    <section class="Hui-article">
+        <div id="Hui-tabNav" class="Hui-tabNav">
+            <div class="Hui-tabNav-wp">
+                <ul id="min_title_list" class="acrossTab cl">
+                    <li class="active"><span title="我的桌面" data-href="<{:U('Index/panl')}>">我的桌面</span><em></em></li>
+                </ul>
+            </div>
+            <div class="Hui-tabNav-more btn-group">
+                <a id="js-tabNav-prev" class="btn radius btn-default btn-small" href="javascript:;">
+                    <i class="icon-step-backward"></i>
+                </a>
+                <a id="js-tabNav-next" class="btn radius btn-default btn-small" href="javascript:;">
+                    <i class="icon-step-forward"></i>
+                </a>
+            </div>
+        </div>
+        <div id="iframe_box" class="Hui-articlebox">
+            <div class="show_iframe">
+                <div style="display:none" class="loading"></div>
+                <iframe scrolling="yes" frameborder="0" src="<{:U('Index/panl')}>"></iframe>
+            </div>
+        </div>
+    </section>
+</div>
+<script type="text/javascript" src="__STATIC__/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="__CORE__/js/H-ui.js"></script>
+<script type="text/javascript" src="__CORE__/js/H-ui.admin.js"></script>
+<script type="text/javascript" src="__CORE__/js/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script type="text/javascript" src="__STATIC__/layer/layer.min.js"></script>
+<!--[if IE 6]>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<script>
+    $(function(){
+        /*给菜单绑定事件*/
+        $('.top-nav').on('click',function(){
+            $('.top-nav.current').removeClass('current');
+            var obj = $(this);
+            obj.addClass('current');
+            var nav_id = obj.attr('nav-id');
+            $('.navshow').removeClass('navshow').addClass('navhid');
+            $('.nav-id-'+nav_id).removeClass('navhid').addClass('navshow');
+        });
+    });
+
+function logout(){
+    layer.confirm('您确定要退出【<{$site_title}>】吗？', function(){
+        window.location.href="<{:U('Public/logout')}>";
+    });
+    return false;
+}
+</script>
+</body>
+</html>

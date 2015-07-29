@@ -1,0 +1,8 @@
+<span class="select-box-span radius" style="margin-right:10px;">
+    <select name="pid[]" class="myselect node_select" autocomplete="off">
+        <option value="0">--请选择--</option>
+        <volist name="twoNode" id="vo">
+            <option value="<{$vo.id}>"><{$vo.name}></option>
+        </volist>
+    </select>
+</span>

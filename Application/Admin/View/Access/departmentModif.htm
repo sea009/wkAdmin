@@ -1,0 +1,88 @@
+<extend name="Global:base_window"/>
+<block name="style">
+</block>
+<block name="script">
+    <script>
+        $("#admin-role-save").click(function(){
+            var name = $("input[name='name']").val();
+            var rid  = $("select[name='rid']").val();
+
+            if(name=='' || name==undefined){
+                layer.msg('部门名称不能为空');
+                return;
+            }
+            if(rid=='' || rid==undefined){
+                layer.msg('默认角色不能为空');
+                return;
+            }
+            $.ajax({
+                type    : 'post',
+                url     : $("#department").attr('action'),
+                data    : $("#department").serialize(),
+                dataType: "json",
+                success : function(data){
+                    if (data.status == 0) {
+                        layer.msg(data.info);
+                        return;
+                    } else {
+                        layer.msg(data.info, 2, 1, function(){
+                            window.parent.location.reload();
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</block>
+<block name="main">
+    
+    <div class="codeView ml-10 mr-10 mt-10 pretty-area radius">
+        <form action="<{:U('Access/departmentModif')}>" method="POST" id="department"  accept-charset="utf-8" >
+            <input type="hidden" name="id" value="<{$info.id}>"/>
+            <div class="formRow l  pr-20">
+                <div class="formControls">
+                    <strong class="pr-20">部门名称:</strong><input class="form-control input-text radius" name="name" value="<{$info.name}>" required="">
+                    <strong class="pr-20 pl-40">部门代号:</strong><input class="form-control input-text radius" name="code" value="<{$info.code}>">
+                </div>
+            </div>
+            <div class="formRow l  pr-20">
+                <div class="formControls">
+                    <strong class="pr-20">排序:</strong><input class="form-control input-text radius" name="sort" value="<{$info.sort}>">
+                    <strong class="pr-20 pl-40">状态:</strong><input class="form-control input-text radius" name="status" value="<{$info.status}>">
+                </div>
+            </div>
+            <div class="formRow l  pr-20">
+                <div class="formControls">
+                    <strong class="pr-20">默认角色:</strong>
+                    <select name="rid" required="">
+                        <volist name="roleList" id="vo">
+                            <option  value="<{$vo.id}>" <if condition="$vo.id eq $info.rid">checked</if>><{$vo.name}></option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+
+            <div class="cl"></div>
+            <div class="formRow">
+                <div class="c1 formControls text-c">
+                    <button id="admin-role-save" class="btn btn-success radius" name="admin-role-save" type="button">
+                        <i class="icon-ok"></i>
+                        确定
+                    </button>
+                    <button  class="btn radius btn-danger" name="admin-role-save" type="reset">
+                        <i class="icon-refresh"></i>
+                        重置
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</block>
+
+
+
+
+
+
+
+
