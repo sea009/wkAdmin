@@ -23,7 +23,7 @@ class CommonController extends Controller{
 		$this->assign('loginUser', $users);
 
 		/***----------权限控制-----------***/
-		$AuthLogic = new \Index\Logic\AuthLogic($this->admin_id);
+		$AuthLogic = new \Admin\Logic\AuthLogic($this->admin_id);
 		if (true === $AuthLogic->check_auth()) {
 		} else {
 			if (IS_AJAX) {
