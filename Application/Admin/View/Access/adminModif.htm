@@ -36,7 +36,7 @@
                 <select name="role_id">
                     <volist name="roleList" id="r">
                         <if condition="$r['status'] neq 1">
-                            <option value="<{$r.id}>">|-<{$r.name}></option>
+                            <option value="<{$r.id}>"><{$r.name}></option>
                         </if>
                     </volist>
                 </select>
@@ -66,11 +66,3 @@
     </form>
 </div>
 </block>
-
-
-
-
-
-
-
-
