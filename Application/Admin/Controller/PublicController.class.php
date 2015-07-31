@@ -47,9 +47,9 @@ class PublicController extends Controller{
         $name   = $_POST['username'];
 
         //验证数据
-        if (!$this->checkCaptcha($_POST['codeinput'])) {
+        /* if (!$this->checkCaptcha($_POST['codeinput'])) {
             $this->error('验证码错误！');
-        }
+        } */
 
         /* 验证是否存在该用户 */
         $admin = D('sys_admin');

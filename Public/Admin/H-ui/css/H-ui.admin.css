@@ -117,9 +117,9 @@ h4{line-height:30px}
 		.menu_dropdown dt{line-height:44px}
 		.menu_dropdown li,.menu_dropdown dd li,.menu_dropdown dd li a{ line-height:44px}
   .Hui-tabNav{ position:fixed; z-index:998}
-  .Hui-article-box{ position:static; left:0}
+  .Hui-article-box{ position:static; left:200px;}
   .Hui-article-box .pd-20{padding:20px 10px}
-		.Hui-article{left:0}
+		.Hui-article{left:200px;}
 		.Hui-container .bk-gray{ border:none}
 		.Hui-container .pd-10{ padding:0}
 }

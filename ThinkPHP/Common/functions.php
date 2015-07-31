@@ -894,7 +894,6 @@ function is_ssl() {
 function redirect($url, $time=0, $msg='') {
     //多行URL地址支持
     $url        = str_replace(array("\n", "\r"), '', $url);
-    print_r($url);die;
     if (empty($msg))
         $msg    = "系统将在{$time}秒之后自动跳转到{$url}！";
     if (!headers_sent()) {
@@ -1307,4 +1306,18 @@ function filter_exp(&$value){
 // 不区分大小写的in_array实现
 function in_array_case($value,$array){
     return in_array(strtolower($value),array_map('strtolower',$array));
+}
+
+function myPage($model, $nowPage = 1, $listRows = '10', $where = '', $field = '', $order = '') {
+	if (empty($model)) {
+		$model = M();
+	}
+	$data['list'] = $model->where($where)->field($field)->page($nowPage, $listRows)->order($order)->select();
+	if (!$data['list'])
+		return false; //如果没有数据 返回false
+	import('ORG.Util.Page'); // 导入分页类
+	$count = $model->where($where)->count(); // 查询满足要求的总记录数 $map表示查询条件
+	$Page = new \Think\Page($count, $listRows); // 实例化分页类 传入总记录数
+	$data['show'] = $Page->show(); // 分页显示输出
+	return $data;
 }
