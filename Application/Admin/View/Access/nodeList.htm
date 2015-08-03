@@ -8,6 +8,7 @@
 </style>
 </block>
 <block name="script">
+    <script type="text/javascript" src="__STATIC__/Validform/js/Validform_v5.3.2.js"></script>
     <script type="text/javascript" src="__STATIC__/zTree/jquery.ztree.all-3.5.min.js"></script>
     <script>
         $(function(){
@@ -124,12 +125,12 @@
 </block>
 <block name="main">
     <div class="codeView ml-10 mt-10 pretty-area radius">
-        <div class="select-box-span radius ml-10 mb-10" style="padding: 20px">
+        <div class="select-box-span radius pretty-area ml-10 mb-10" style="padding: 20px">
             <form id="addNodeForm" action="<{:U('Access-nodeAdd')}>">
                 <div class="row cl" style="margin-bottom: 10px;">
-                    <cite class="pl-40 pr-10">名称:</cite><input type="text" class="input-text radius" name="name" autocomplete="off" required=""/>
-                    <cite class="pl-40 pr-10">链接:</cite><input type="text" class="input-text radius" name="code" autocomplete="off"/>
-                    <cite class="pl-40 pr-10">排序:</cite><input type="text" class="input-text radius" name="sort" autocomplete="off"/>
+                    <cite class="pl-20 pr-10">名称:</cite><input type="text" class="input-text radius" name="name" autocomplete="off" required=""/>
+                    <cite class="pl-20 pr-10">链接:</cite><input type="text" class="input-text radius" name="code" autocomplete="off"/>
+                    <cite class="pl-20 pr-10">排序:</cite><input type="text" class="input-text radius" name="sort" autocomplete="off"/>
                     <span class="select-box-span radius">
                         <cite class="pl-40 pr-10">是否显示:</cite>
                         <label><input type="radio" value="1" name="status" autocomplete="off">显示&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -138,7 +139,7 @@
                     </span>
                 </div>
                 <div id="node_change_box" class="row cl" style="margin-bottom: 10px;">
-                    <cite class="pl-40 pr-10">父类:</cite>
+                    <cite class="pl-20 pr-10">父类:</cite>
                     <span class="select-box-span radius" style="margin-right:10px;">
                         <select name="pid[]" class="myselect node_select" autocomplete="off">
                             <volist name="firstNode" id="vo">
@@ -147,7 +148,7 @@
                         </select>
                     </span>
                 </div>
-                <div class="row cl" style="margin-bottom: 10px;">
+                <div class="row cl pl-20" style="margin-bottom: 10px;">
                     <div class="col-9 col-offset-3">
                         <input type="submit" value="添加" class="btn radius btn-primary">
                         <input type="reset" value="重置" class="btn radius btn-danger">
@@ -166,5 +167,6 @@
                 <form id="NodeEditF" action="<{:U('Access/nodeModif')}>"></form>
             </div>
         </div>
+        <div class="clearfix"></div>
     </div>
 </block>

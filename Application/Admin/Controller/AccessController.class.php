@@ -140,24 +140,23 @@ class AccessController extends CommonController {
 	 * 修改管理员
 	 */
 	public function adminModif(){
-        if(!IS_POST){
-            $id = I('id','','int');
-
-            //获取部门列表
-            $dp = M('sys_department');
-            $dpList= $dp->field('id,name')->order('sort desc')->select();
-            $this->assign('dpList', $dpList);
-
-            //获取角色列表
-            $roleList = M('sys_role')->order('sort desc')->field('id,name')->select();
-            $this->assign('roleList', $roleList);
-
-            //获取当前管理员的基本信息
-            $adminInfo = M('sys_admin')->where("id='%d'",$id)->field('sort,status',true)->find();
-            $this->assign('adminInfo',$adminInfo);
-            $this->display();die;
-        }
-
+		if(!IS_POST){
+			$id = I('id','','int');
+		
+			//获取部门列表
+			$dp = M('sys_department');
+			$dpList= $dp->field('id,name')->order('sort desc')->select();
+			$this->assign('dpList', $dpList);
+		
+			//获取角色列表
+			$roleList = M('sys_role')->order('sort desc')->field('id,name')->select();
+			$this->assign('roleList', $roleList);
+		
+			//获取当前管理员的基本信息
+			$adminInfo = M('sys_admin')->where("id='%d'",$id)->field('sort,status',true)->find();
+			$this->assign('adminInfo',$adminInfo);
+			$this->display();die;
+		}
 		$admin = M('sys_admin');
 		if (false === $admin->data($_POST)->save()) {
 			$this->error('修改失败');die;
